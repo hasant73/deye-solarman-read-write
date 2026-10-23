@@ -8,6 +8,7 @@ import tuncay.deye.modules.TimeOfUse;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,7 +38,7 @@ public class Main {
    */
   static void main(String[] args) throws Exception {
 
-    try (DeyeClient deye = new DeyeClient(IP_ADDRESS, PORT)) {
+    try (DeyeClient deye = new DeyeClient(IP_ADDRESS, PORT, 3)) {
 
       // write multiple registers at once, for example to set the SOC values for the Time of Use module
       deye.write(TimeOfUse.SOC_1.getRegister(), 40, 40, 40, 40, 40, 40);
@@ -46,19 +47,19 @@ public class Main {
       TimeUnit.SECONDS.sleep(1);
 
       // read multiple registers at once, for example to read the SOC values for the Time of Use module
-      List<RegisterValue> values = deye.read(TimeOfUse.SOC_1.getRegister(), 6);
-      values.forEach(l -> log.info(l.toString()));
+      Map<Integer, RegisterValue> values = deye.read(TimeOfUse.SOC_1.getRegister(), 6);
+      values.forEach((k, v) -> log.info(v.toString()));
 
       String serialNumber = deye.readAsciiString(3,5);
       log.info(serialNumber);
 
-      LocalDateTime time = deye.read3ByteInverterTime(Inverter.TIME_STAMP.getRegister(), 3);
+      LocalDateTime time = deye.read3ByteInverterTime(Inverter.TIME_STAMP.getRegister());
       log.info("Inverter time: " + time);
 
       while (!Thread.interrupted()) {
         try {
-          List<RegisterValue> pvs = deye.read(Production.PV1_POWER.getRegister(), 2);
-          log.info("PV1: " + pvs.get(0) + " PV2: " + pvs.get(1));
+          Map<Integer, RegisterValue> pvs = deye.read(Production.PV1_POWER.getRegister(), 2);
+          log.info("PV1: " + pvs.get(Production.PV1_POWER.getRegister()) + " PV2: " + pvs.get(Production.PV2_POWER.getRegister()));
           TimeUnit.MINUTES.sleep(1);
         } catch (Exception e) {
           log.error("Error reading PV power", e);

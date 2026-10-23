@@ -2,8 +2,7 @@ package tuncay.deye;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>Deye client for reading and writing registers.</p>
@@ -21,18 +20,18 @@ public class DeyeClient implements AutoCloseable {
 
   private final ModbusConnection mConnection;
 
-  public DeyeClient(String mHost, int mPort) throws IOException {
-    mConnection = new ModbusConnection(mHost, mPort, 1, 10);
+  public DeyeClient(String mHost, int mPort, int pMaxRetries) throws IOException {
+    mConnection = new ModbusConnection(mHost, mPort, 1, pMaxRetries);
   }
 
-  public List<RegisterValue> read(int pRegister, int pCount) throws IOException, InterruptedException {
+  public Map<Integer, RegisterValue> read(int pRegister, int pCount) throws IOException, InterruptedException {
     var request = new ReadHoldingRegistersRequest(pRegister, pCount);
     byte[] response = mConnection.execute(request);
     int byteCount = response[1] & 0xff;
-    List<RegisterValue> values = new ArrayList<>();
+    Map<Integer, RegisterValue> values = new LinkedHashMap<>(pCount);
     for (int i = 0; i < byteCount / 2; i++) {
       int value = ((response[2 + i * 2] & 0xff) << 8) | (response[3 + i * 2] & 0xff);
-      values.add(new RegisterValue(pRegister + i, value));
+      values.put(pRegister + i, new RegisterValue(pRegister + i, value));
     }
     return values;
   }
@@ -47,21 +46,21 @@ public class DeyeClient implements AutoCloseable {
    * @throws InterruptedException e
    */
   public String readAsciiString(int pStart, int pCount) throws IOException, InterruptedException {
-    final List<RegisterValue> values = read(pStart, pCount);
+    final Map<Integer, RegisterValue> values = read(pStart, pCount);
     StringBuilder result = new StringBuilder();
-    for (RegisterValue value : values) {
-      result.append((char) (value.value() >> 8));
-      result.append((char) (value.value() & 0xFF));
+    for (Integer key : values.keySet()) {
+      result.append((char) (values.get(key).value() >> 8));
+      result.append((char) (values.get(key).value() & 0xFF));
     }
     return result.toString().trim();
   }
 
-  public LocalDateTime read3ByteInverterTime(int pStart, int pCount)
+  public LocalDateTime read3ByteInverterTime(int pStart)
       throws IOException, InterruptedException {
-    List<RegisterValue> values = read(pStart, pCount);
-    int reg1 = values.get(0).value();
-    int reg2 = values.get(1).value();
-    int reg3 = values.get(2).value();
+    Map<Integer, RegisterValue> values = read(pStart, 3);
+    int reg1 = values.get(pStart).value();
+    int reg2 = values.get(pStart + 1).value();
+    int reg3 = values.get(pStart + 2).value();
     int year = (reg1 >> 8) & 0xFF;
     int month = reg1 & 0xFF;
     int day = (reg2 >> 8) & 0xFF;
@@ -79,9 +78,9 @@ public class DeyeClient implements AutoCloseable {
    * @throws InterruptedException e
    */
   public int read32BitInteger(int pStart) throws IOException, InterruptedException {
-    List<RegisterValue> values = read(pStart, 2);
-    int highWord = values.get(0).value();
-    int lowWord = values.get(1).value();
+    Map<Integer, RegisterValue> values = read(pStart, 2);
+    int highWord = values.get(pStart).value();
+    int lowWord = values.get(pStart + 1).value();
     return (highWord << 16) | lowWord;
   }
 
