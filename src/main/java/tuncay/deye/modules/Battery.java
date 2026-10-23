@@ -3,6 +3,7 @@ package tuncay.deye.modules;
 /**
  * Battery registers.
  * All registers are only readable.
+ * @author hasant73
  */
 public enum Battery implements Register {
 

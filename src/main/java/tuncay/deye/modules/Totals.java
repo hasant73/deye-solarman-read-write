@@ -3,6 +3,7 @@ package tuncay.deye.modules;
 /**
  * Totals registers.
  * The totals are saved in two registers. The first register contains the high word, the second register contains the low word.
+ * @author hasant73
  */
 public enum Totals implements Register {
 

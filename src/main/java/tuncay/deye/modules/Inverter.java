@@ -2,6 +2,7 @@ package tuncay.deye.modules;
 
 /**
  * Inverter registers.
+ * @author hasant73
  */
 public enum Inverter implements Register {
 

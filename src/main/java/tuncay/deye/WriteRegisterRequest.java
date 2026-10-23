@@ -1,5 +1,9 @@
 package tuncay.deye;
 
+/**
+ * Write Register request.
+ * @author hasant73
+ */
 public class WriteRegisterRequest implements ModbusRequest {
 
   private final int mRegister;

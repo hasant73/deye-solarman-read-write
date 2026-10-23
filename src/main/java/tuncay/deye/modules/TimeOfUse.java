@@ -3,6 +3,7 @@ package tuncay.deye.modules;
 /**
  * Time of use registers.
  * All registers are writeable.
+ * @author hasant73
  */
 public enum TimeOfUse implements Register {
 

@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * Modbus request for writing multiple registers.
+ * @author hasant73
  */
 public class WriteRegistersRequest implements ModbusRequest {
 

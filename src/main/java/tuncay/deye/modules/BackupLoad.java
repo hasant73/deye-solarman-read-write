@@ -3,6 +3,7 @@ package tuncay.deye.modules;
 /**
  * Load registers
  * All registers are only readable.
+ * @author hasant73
  */
 public enum BackupLoad implements Register {
 

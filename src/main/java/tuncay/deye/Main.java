@@ -10,6 +10,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Example code to read and write registers from a Deye inverter using the DeyeClient.
+ *
+ * @author hasant73
+ *
+ **/
 public class Main {
 
   private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -20,6 +26,15 @@ public class Main {
   // set your own port of the Deye inverter here
   private static final int PORT = 8899;
 
+  /**
+   * 1.Change the soc of time of use to 40% for all 6 registers
+   * 2.Read the soc of time of use for all 6 registers
+   * 3.Read the serial number of the inverter
+   * 4.Read the inverter time
+   * 5.Read the PV1 and PV2 power every minute
+   * @param args no args needed
+   * @throws Exception exception if something goes wrong
+   */
   static void main(String[] args) throws Exception {
 
     try (DeyeClient deye = new DeyeClient(IP_ADDRESS, PORT)) {

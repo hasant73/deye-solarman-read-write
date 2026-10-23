@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Modbus TCP connection.
+ * @author hasant73
  */
 public class ModbusConnection implements AutoCloseable {
 

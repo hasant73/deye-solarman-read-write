@@ -3,6 +3,7 @@ package tuncay.deye.modules;
 /**
  * Grid registers.
  * All registers are only readable.
+ * @author hasant73
  */
 public enum Grid implements Register {
 

@@ -15,6 +15,7 @@ import java.util.List;
  * <p>The software is provided AS IS without any warranty.</p>
  *
  * Use at your own risk.
+ * @author hasant73
  */
 public class DeyeClient implements AutoCloseable {
 

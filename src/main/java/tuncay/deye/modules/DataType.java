@@ -1,5 +1,9 @@
 package tuncay.deye.modules;
 
+/**
+ * Data type for registers.
+ * @author hasant73
+ */
 public enum DataType {
 
   INT,

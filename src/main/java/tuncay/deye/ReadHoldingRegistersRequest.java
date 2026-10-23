@@ -1,5 +1,9 @@
 package tuncay.deye;
 
+/**
+ * Read Holding Registers request.
+ * @author hasant73
+ */
 public class ReadHoldingRegistersRequest implements ModbusRequest {
 
   private final int mStartRegister;

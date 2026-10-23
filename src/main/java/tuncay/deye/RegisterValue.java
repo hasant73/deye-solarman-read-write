@@ -2,6 +2,7 @@ package tuncay.deye;
 
 /**
  * Register value with address and value.
+ * @author hasant73
  */
 public record RegisterValue(
         int address,

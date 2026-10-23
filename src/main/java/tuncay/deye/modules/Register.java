@@ -2,6 +2,7 @@ package tuncay.deye.modules;
 
 /**
  * Register interface.
+ * @author hasant73
  */
 public interface Register {
   int getRegister();

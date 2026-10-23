@@ -3,6 +3,7 @@ package tuncay.deye.modules;
 /**
  * Time of use registers.
  * All registers are only readable.
+ * @author hasant73
  */
 public enum Production implements Register {
 
